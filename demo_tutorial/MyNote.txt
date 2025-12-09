@@ -1,0 +1,137 @@
+URL'S, VIEWS AND TEMPLATES
+
+python manage.py migrate: Kiểm tra các migration chưa được áp dụng và thực hiện các thay đổi đó trên database hiện tại.
+
+Django project:
+- Được cấu thành bởi một tập hợp nhiều settings, configurations và apps
+- Có thể có 1 hoặc nhiều apps trong 1 project Django duy nhất
+
+Django app: 
+- Là một ứng dụng nhỏ phục vụ 1 mục đích duy nhất
+- Một app thường chứa URLs, views, templates và models
+- Câu lệnh khởi tạo: django-admin startapp <tên-app>
+
+URL: 
+- "Uniform Resource Locator", được dùng để xác định địa chỉ của một trang web cụ thể
+- Ví dụ: xyz.com/my-blog
+
+View: 
+- Là các hàm/lớp Python dùng để trả về 1 response
+
+Template:
+- File text này đóng vai trò như một template, đại diện cho 
+layout hoặc cấu trúc của một tài liệu, được xây dựng bằng 
+cú pháp đánh dấu của Django Template Language (DTL)
+- Template được sử dụng nhiều nhất dưới dạng một file HTML đơn giản
+- Ngoài ra còn có: CSV files, XML files
++ Template Inheritance: 
+    - Cho phép bạn xây dựng 1 template base
+    mà chứa thành phần có thể sử dụng lại trong các template khác. Hơn
+    nữa nó định nghĩa 1 tập hợp các block mà templates con có thể 
+    viết đè lên vào template gốc. DTL cung cấp 1 tập hợp các tags
+    xây dựng sẵn để giúp bạn thực hiện việc kế thừa template
+    - Nếu kế thừa (extend) template base thì mọi dòng code ở ngoài 
+    block sẽ không được chạy
++ DTL (Django Template Language): 
+    - Còn được gọi là "mini-language" mà chúng ta có thể dùng để 
+    viết logic bên trong tempaltes của chúng ta
+    - Ta có thể dùng DTL để truyền biến vào templates, tạo mệnh
+    đề if, tạo vòng lặp (loops), render data vào template,...
+    - Đi kèm với các tags đã được build sẵn, được đặt trong 
+    {% %} và cho phép chúng ta viết các logic theo ngôn ngữ python
+    vào template
+    Ví dụ: {% csrf_token %}, {% extends %}
+    - Ta có thể dùng dot . để dùng cho từng object như OOP
+
+render: 
+- Là hàm render code template
+- Cấu trúc: render(request, 'file-html', context)
+- Để in nội dung của biến trong context hãy dùng {{}}
+
+HTML:
+- <h{i}></h{i}> là thẻ heading cấp i (tiêu đề cấp i)
+- <p></p> là thẻ dùng để tạo đoạn văn bản (paragraph)
+- <hr> là thẻ dùng để tạo đường ngang
+- <br> là thẻ xuống hàng
+- <a href="{% url '---' %}"> Text </a>: Đường link đến url
+------------------------------------------------------------
+
+BUILD DATABASE
+
+Database:
+- Là data được thu thập có tổ chức. Mặc định, chúng ta dùng dtb SQLite trong project
+- Database được phân loại có quan hệ hoặc không có quan hiện
+- Khi data được lưu trong databse, chúng ta có thể kiểm soát và query cho mục đích riêng của mình
++ Relational database:
+    - Là database được tổ chức thành bảng gồm các hàng và cột
+    - Để kiểm soát và query trong 1 relational dtb ta dùng SQL
++ Non-relational database:
+    - Là 1 loại database khác mà không dùng cấu trúc quan hệ bảng 
+    - Chúng dùng các data models gồm key-value, col-family hoặc document
+    - Thường dùng cho xử lí large-scale, distributed/undistributed data
+
+Django Model:
+- Là một tính năng được xây dựng sẵn để tạo bảng cùng với các miền,
+và các ràng buộc bên cạnh cần thiết
+- Là các class Python đại diện cho các bảng trong database
+Ví dụ: from django.db import models
+- Được định nghĩa trong file model.py. Mỗi attribute của model
+là 1 filed trong bảng tương ứng của database
+- Thêm model vào trang admin bằng cách khai báo model vào file admin.py
+Ví dụ: admin.site.register(Task)
+
+Foreign Key:
+- Là key được dùng để nối 2 bảng database với nhau
+- Có thể được sử dụng để tham chiếu đến thuộc tính từ một bảng khác
+
+makemigration: Lưu lại các thay đổi (nhưng chưa thay đổi)
+migrate: Thực hiện các thay đổi trong makemigration
+
+Database Query:
+- Dùng để thực hiện một thay đổi hoặc lựa chọn trên bảng database
+- Trong Django, để query records ta dùng ORM
+- ORM cho phép ta giao tiếp với database mà không cần chạy các lệnh SQL
+    Ví dụ:  from .models import ModelName
+            queryDataAll = ModelName.objects.all()
+            queryDataSingle = ModelName.objects.get(attribute='value)
+---------------------------------------------------------------
+
+CRUD
+
+CRUD:
+- bao gồm một list hàm cần thiết để xử lý dữ liệu, đặc biệt trên
+database của chúng ta
+- Create: Tạo data mới
+- Read: truy xuất data có sẵn
+- Update: chỉnh sửa data có sẵn
+- Delete: Xóa data khỏi database
+
+Model Form:
+- Là một class chuyển Django model thành một form cho phép nhập
+các attribute
+
+Dynamic URL:
+- Một dynamic URL cho phép bạn điều hướng tới một webpages khác
+dựa trên các giá trị được thêm vào URL trong một HTTP request
+Ví dụ: path('update-task/<str:pk>', views.update_task, name="update-task")
+-------------------------------------------------------------
+
+STATIC FILES
+
+Static files (file tĩnh):
+- Là các file không thay đổi khi một website vận hành
+- Chúng thường được dùng trong web dev, nơi chúng ta cần triển khai các content tĩnh,
+nhưu là các CSS và JavaScript files. Các file tĩnh đi thẳng từ server web tới người
+dùng mà không chỉnh sửa gì cả
+- Ngoài ra còn có hình ảnh. Hình ảnh mà không thường thay đổi,
+như những website trình bày hoặc không trực tiếp tải lên, có
+thể lưu trữ trực tiếp trong thư mục tĩnh. Tuy nhiên nếu bạn
+đang xử lí với web cho phép người dùng đăng content, best practice 
+là dùng một folder media
+
+Một số lưu ý với Django:
+- Phải khai báo STATICFILES_DIRS = [BASE_DIR / 'static'] 
+và mọi folder static khác nếu nó không nằm trong app nhỏ
+nào đó
+- STATIC_URL là để khi dùng href="{% static 'css/style.css' %}
+chương trình hiểu được static là biến nào

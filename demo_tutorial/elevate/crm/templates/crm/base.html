@@ -1,0 +1,58 @@
+{% load static %}
+
+
+<html>
+
+    <head>
+        <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+
+    </head>
+
+
+
+    <h1> Website under development </h1>
+
+    <hr> 
+
+    <a href="{% url '' %}"> Home </a>
+
+    &nbsp;
+
+    <a href="{% url 'create-task' %}"> Create task </a>
+
+    &nbsp;
+
+    <a href="{% url 'view-tasks' %}"> View tasks </a>
+
+
+    &nbsp;
+
+    {% if not user.is_authenticated %}
+
+        <a href="{% url 'register' %}"> Register </a>
+        &nbsp;
+
+    {% endif %}
+
+    {% if not user.is_authenticated %}
+
+        <a href="{% url 'my-login' %}"> Login </a>
+        &nbsp;
+
+    {% endif %}
+
+    {% if user.is_authenticated %}
+
+        <a href="{% url 'dashboard' %}"> Dashboard </a>
+        &nbsp;
+
+    {% endif %}
+
+    <hr>
+
+    {% block content %}
+
+    {% endblock %}
+
+    <script src="{% static 'js/app.js' %}"></script>
+</html>
