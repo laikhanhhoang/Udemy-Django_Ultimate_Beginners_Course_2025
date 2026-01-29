@@ -1,0 +1,28 @@
+{% extends 'journal/navbar.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content%}
+    <br> <br> <br>
+
+    <div class="container bg-white shadow-md p-5 form-layout">
+
+        <h1> Delete a Thought </h1>
+
+        <p> Are you sure you want to delete this thought? </p>
+
+        <form method="POST">
+
+            {% csrf_token %}
+            
+
+
+            <button class="btn btn-outline-danger btn-lg w-75 mx-auto d-block p-3" type="submit"> &nbsp; Delete Thought </button>
+        
+        </form>
+
+        <a href="{% url 'my-thoughts' %}" > Return to your thoughts! </a>
+
+    </div>
+
+{% endblock content %}

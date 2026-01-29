@@ -1,0 +1,62 @@
+{% extends 'journal/navbar.html' %}
+
+{% load static %}
+
+{% block content %}
+
+{% if messages %}
+
+    {% for message in messages %}
+
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+
+            <p id="message-timer" class="alert alert-success text-center message-text"> <i class="fa fa-check" aria-hidden="true"></i> &nbsp; {{message}} </p>
+
+        {% endif %}
+
+    {% endfor %}
+
+{% endif %}
+
+<br>
+
+<div class="container d-flex justify-content-end mb-3">
+    <a href="{% url 'create-thought' %}" class="btn btn-outline-primary p-2.5">
+        <i class="fa fa-plus"></i> &nbsp; Add new thought
+    </a>
+</div>
+
+<br> 
+
+{% for thought in AllThoughts %}
+
+
+
+<div class="container bg-white shadow-md p-5 form-layout position-relative">
+
+    <!-- ACTION BUTTONS -->
+    <div class="position-absolute top-0 end-0 p-3">
+        <a href="{% url 'update-thought' thought.id %}" class="btn btn-sm btn-outline-primary me-2">
+            <i class="fa fa-pencil-square-o"></i>
+        </a>
+
+        <a href="{% url 'delete-thought' thought.id %}" class="btn btn-sm btn-outline-danger">
+            <i class="fa fa-trash"></i>
+        </a>
+    </div>
+
+    <h3>{{ thought.title }}</h3>
+
+    <p><em>{{ thought.date_posted }} by {{ thought.user }}</em></p>
+
+    <br>
+    <p>{{ thought.content }}</p>
+
+</div>
+<br>
+
+{% endfor %}
+
+<script src="{% static 'js/app.js' %}"></script>
+
+{% endblock content %}
